@@ -75,3 +75,7 @@ export const refreshUserSessionController = async (req, res) => {
     },
   });
 };
+
+export const updateProfileController=async(req,res)=>{
+  
+}

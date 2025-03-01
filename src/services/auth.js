@@ -77,3 +77,6 @@ export const refreshUsersSession=async({sessionId, refreshToken})=>{
     ...newSession,
   });
 }
+export const updateProfile=async(req,res)=>{
+  
+}
