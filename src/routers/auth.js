@@ -1,5 +1,5 @@
 import express from "express";
-import { loginController, logoutController, refreshUserSessionController, signUpController, updateProfileController } from "../controllers/auth.js";
+import { checkController, loginController, logoutController, refreshUserSessionController, signUpController} from "../controllers/auth.js";
 import { ctrlWrapper } from "../utils/ctrlWrapper.js";
 import { validateBody } from "../middlewares/validateBody.js";
 import { createUserSchemma, loginUserSchema } from "../validation/auth.js";
@@ -14,6 +14,7 @@ router.post("/login", validateBody(loginUserSchema), ctrlWrapper(loginController
 router.post("/logout", ctrlWrapper(logoutController));
 router.post('/refresh', ctrlWrapper(refreshUserSessionController));
 
-router.put('/update-profile', protectRoute, ctrlWrapper(updateProfileController) )
+// router.put('/update-profile', protectRoute, ctrlWrapper(updateProfileController) )
+router.get('/check', protectRoute, ctrlWrapper(checkController))
 
 export default router;

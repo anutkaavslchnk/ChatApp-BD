@@ -1,7 +1,8 @@
+
 import { ONE_DAY } from "../constants/constans.js";
 import { loginUser, logOutUser, refreshUsersSession, signUpUser } from "../services/auth.js";
 
-export const signUpController = async (req, res, next) => {
+export const signUpController = async (req, res) => {
 
 
       const userData = await signUpUser(req.body);
@@ -11,7 +12,7 @@ export const signUpController = async (req, res, next) => {
   };
   
 
-  export const loginController = async (req, res, next) => {
+  export const loginController = async (req, res) => {
 const session=await loginUser(req.body);
 res.cookie('refreshToken', session.refreshToken,{
   httpOnly:true,
@@ -76,6 +77,24 @@ export const refreshUserSessionController = async (req, res) => {
   });
 };
 
-export const updateProfileController=async(req,res)=>{
+// export const updateProfileController=async(req,res)=>{
+//   await updateProfile(req, res);
+   
+
+// }
+
+
+
+export const checkController=(req,res)=>{
+try {
+  res.status(200).json(req.user);
+} catch (error) {
+  console.log(error.message);
+  res.status(500).json({message:"Internal server error"});
   
 }
+   
+
+}
+
+

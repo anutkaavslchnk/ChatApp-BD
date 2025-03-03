@@ -4,6 +4,8 @@ import { randomBytes } from 'crypto';
 import createHttpError from "http-errors";
 import { SessionsCollection } from "../db/models/session.js";
 import { AN_HOUR, ONE_DAY } from "../constants/constans.js";
+import cloudinary from "../utils/imageCloud.js";
+import { log } from "console";
 
 
 export const signUpUser = async (payload) => {
@@ -77,6 +79,36 @@ export const refreshUsersSession=async({sessionId, refreshToken})=>{
     ...newSession,
   });
 }
-export const updateProfile=async(req,res)=>{
+export const updateProfile=async(req,res,next)=>{
+  // try {
+  //   const { profileAvatar } = req.body;
+  //   const userId = req.user._id; 
+  //   if (!profileAvatar) {
+  //     throw createHttpError(400, "Avatar picture is required");
+  //   }
+
   
+  //   const uploadResponse = await cloudinary.uploader.upload(profileAvatar);
+
+
+  //   const updatedUser = await User.findByIdAndUpdate(
+  //     userId,
+  //     { profileAvatar: uploadResponse.secure_url },
+  //     { new: true }
+  //   );
+
+  //   if (!updatedUser) {
+  //     throw createHttpError(404, "User not found");
+  //   }
+
+  //   res.json({
+  //     message: "Profile updated successfully",
+  //     user: updatedUser,
+  //   });
+  // } catch (error) {
+ 
+  //   console.error("Error in updateProfile:", error);
+  //   next(error);  
+  // }
 }
+

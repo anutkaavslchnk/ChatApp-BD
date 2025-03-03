@@ -13,7 +13,7 @@ import router from './routers/index.js';
 
 
 const app=express();
-app.use(cors({ origin: "http://localhost:3000", credentials: true })); // Enable cookies in CORS
+app.use(cors({ origin: "http://localhost:3000", credentials: true })); 
 app.use(cookieParser());
 
 app.use(
@@ -27,7 +27,6 @@ app.use(router);
 app.use(errorHandler);
 app.use("*", notFoundHandler);
 
-// ✅ Fix PORT issue
 const PORT = Number(env[PORT_VAR.PORT]) || 5001;
 
 app.listen(PORT, () => {
