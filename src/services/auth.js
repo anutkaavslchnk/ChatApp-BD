@@ -4,8 +4,7 @@ import { randomBytes } from 'crypto';
 import createHttpError from "http-errors";
 import { SessionsCollection } from "../db/models/session.js";
 import { AN_HOUR, ONE_DAY } from "../constants/constans.js";
-import cloudinary from "../utils/imageCloud.js";
-import { log } from "console";
+
 
 
 export const signUpUser = async (payload) => {
@@ -39,6 +38,8 @@ return await SessionsCollection.create({
   accessTokenValidUntil: new Date(Date.now()+AN_HOUR),
   refreshTokenValidUntil: new Date(Date.now()+ONE_DAY),
 })
+
+
 }
 
 export const logOutUser=async(sessionId)=>{

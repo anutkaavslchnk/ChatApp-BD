@@ -7,7 +7,7 @@ export const signUpController = async (req, res) => {
 
       const userData = await signUpUser(req.body);
   
-      res.status(201).json(userData);
+      res.json(userData);
 
   };
   
@@ -24,8 +24,7 @@ res.cookie('sessionId', session._id,{
 });
 
 res.json({
-  status:200,
-  message:'Success',
+
   accessToken:session.accessToken,
 })
   };
