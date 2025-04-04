@@ -4,6 +4,7 @@ import { randomBytes } from 'crypto';
 import createHttpError from "http-errors";
 import { SessionsCollection } from "../db/models/session.js";
 import { AN_HOUR, ONE_DAY } from "../constants/constans.js";
+import cloudinary from "../lib/cloudinary.js";
 
 
 
@@ -31,7 +32,7 @@ await SessionsCollection.deleteOne({userId:user._id});
 
 const accessToken=randomBytes(30).toString('base64');
 const refreshToken=randomBytes(30).toString('base64');
-return await SessionsCollection.create({
+const session= await SessionsCollection.create({
   userId:user._id,
   accessToken,
   refreshToken,
@@ -39,7 +40,10 @@ return await SessionsCollection.create({
   refreshTokenValidUntil: new Date(Date.now()+ONE_DAY),
 })
 
-
+return{
+  session,
+user,
+}
 }
 
 export const logOutUser=async(sessionId)=>{
@@ -81,35 +85,35 @@ export const refreshUsersSession=async({sessionId, refreshToken})=>{
   });
 }
 export const updateProfile=async(req,res,next)=>{
-  // try {
-  //   const { profileAvatar } = req.body;
-  //   const userId = req.user._id; 
-  //   if (!profileAvatar) {
-  //     throw createHttpError(400, "Avatar picture is required");
-  //   }
+  try {
+    const { profileAvatar } = req.body;
+    const userId = req.user._id; 
+    if (!profileAvatar) {
+      throw createHttpError(400, "Avatar picture is required");
+    }
 
   
-  //   const uploadResponse = await cloudinary.uploader.upload(profileAvatar);
+    const uploadResponse = await cloudinary.uploader.upload(profileAvatar);
 
 
-  //   const updatedUser = await User.findByIdAndUpdate(
-  //     userId,
-  //     { profileAvatar: uploadResponse.secure_url },
-  //     { new: true }
-  //   );
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { profileAvatar: uploadResponse.secure_url },
+      { new: true }
+    );
 
-  //   if (!updatedUser) {
-  //     throw createHttpError(404, "User not found");
-  //   }
+    if (!updatedUser) {
+      throw createHttpError(404, "User not found");
+    }
 
-  //   res.json({
-  //     message: "Profile updated successfully",
-  //     user: updatedUser,
-  //   });
-  // } catch (error) {
+    res.json({
+      message: "Profile updated successfully",
+      user: updatedUser,
+    });
+  } catch (error) {
  
-  //   console.error("Error in updateProfile:", error);
-  //   next(error);  
-  // }
+    console.error("Error in updateProfile:", error);
+    next(error);  
+  }
 }
 

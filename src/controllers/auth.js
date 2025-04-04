@@ -1,6 +1,6 @@
 
 import { ONE_DAY } from "../constants/constans.js";
-import { loginUser, logOutUser, refreshUsersSession, signUpUser } from "../services/auth.js";
+import { loginUser, logOutUser, refreshUsersSession, signUpUser, updateProfile } from "../services/auth.js";
 
 export const signUpController = async (req, res) => {
 
@@ -13,7 +13,7 @@ export const signUpController = async (req, res) => {
   
 
   export const loginController = async (req, res) => {
-const session=await loginUser(req.body);
+const {session,user}=await loginUser(req.body);
 res.cookie('refreshToken', session.refreshToken,{
   httpOnly:true,
   expires: new Date(Date.now()+ONE_DAY),
@@ -24,7 +24,7 @@ res.cookie('sessionId', session._id,{
 });
 
 res.json({
-
+  user,
   accessToken:session.accessToken,
 })
   };
@@ -76,11 +76,11 @@ export const refreshUserSessionController = async (req, res) => {
   });
 };
 
-// export const updateProfileController=async(req,res)=>{
-//   await updateProfile(req, res);
+export const updateProfileController=async(req,res,next)=>{
+  await updateProfile(req, res,next);
    
 
-// }
+}
 
 
 
