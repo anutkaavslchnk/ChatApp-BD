@@ -8,11 +8,12 @@ import cookieParser from 'cookie-parser';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import router from './routers/index.js';
+import { app,server } from './lib/socket.io.js';
 
 
 
 
-const app=express();
+
 app.use(cors({ origin: "http://localhost:5173", credentials: true })); 
 app.use(cookieParser());
 
@@ -29,7 +30,7 @@ app.use("*", notFoundHandler);
 
 const PORT = Number(env[PORT_VAR.PORT]) || 5001;
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
   initMongoConnection();
 });
