@@ -1,5 +1,6 @@
 import Msg from "../db/models/message.js";
 import User from "../db/models/user.js";
+import { getReceiverId, io } from "../lib/socket.io.js";
 import cloudinary from "../utils/imageCloud.js";
 
 export const getUsers=async(req,res)=>{
@@ -52,6 +53,11 @@ export const getUsers=async(req,res)=>{
     
             await newMessage.save();
     
+            const receiverSocketId=getReceiverId(receiverId);
+            if(receiverSocketId){
+                io.to(receiverSocketId).emit('newMessage', newMessage);
+            }
+
             res.status(201).json(newMessage);
         } catch (error) {
             console.error("Error in sendMsg:", error);  
