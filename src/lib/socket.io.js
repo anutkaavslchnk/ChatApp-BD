@@ -26,7 +26,20 @@ const userSocketMap={};
     io.on('connection', (socket)=>{
     console.log("A user connected", socket.id);
 
-
+    socket.on("typing", ({to, from})=>{
+        const receiverSocketId = userSocketMap[to];
+  if (receiverSocketId) {
+    socket.to(receiverSocketId).emit("typing", { from });
+  }
+        })
+        
+        
+        socket.on("stopTyping", ({to, from})=>{
+            const receiverSocketId = userSocketMap[to];
+            if (receiverSocketId) {
+              socket.to(receiverSocketId).emit("stopTyping", { from });
+            }
+            })
     const userId=socket.handshake.query.userId;
 
 if (userId){
