@@ -17,6 +17,12 @@ const messageSchema=new Schema({
     image:{
         type:String,
     },
+    isDelivered:{
+type:Boolean,
+    },
+    isRead:{
+        type:Boolean,
+    }
 
 },
 {timestamps:true},

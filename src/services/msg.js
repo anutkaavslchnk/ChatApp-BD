@@ -65,3 +65,42 @@ export const getUsers=async(req,res)=>{
         }
     };
     
+
+    export const updateStatusOfDelivered=async(req,res,next)=>{
+try {
+    const {idMsg}=req.params;
+    const userId=req.user._id;
+    const msg=await Msg.findById(idMsg);
+    if(!msg){
+        return res.status(404).json({message:'Message not found'});
+    }
+    if(msg.receiverId.toString()!==userId.toString()){
+       return  res.status(403).json({ message: "Not authorized to update delivery status" });
+
+    }
+    msg.isDelivered=true;
+    await msg.save();
+    res.status(200).json(msg);
+} catch (error) {
+    next(error);
+}
+    }
+
+    export const updateStatusOfRead=async(req,res,next)=>{
+        try {
+            const {idMsg}=req.params;
+            const userId=req.user._id;
+            const msg=await Msg.findById(idMsg);
+            if(!msg){
+                return res.status(404).json({message:"Message not found"})
+            }
+            if(msg.receiverId.toString()!=userId.toString()){
+                return res.status(403).json({message: "Not authorized to update read status"})
+            }
+            msg.isRead=true;
+            await msg.save();
+            res.status(200).json(msg);
+        } catch (error) {
+            next(error)
+        }
+    }
