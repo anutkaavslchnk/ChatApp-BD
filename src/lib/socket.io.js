@@ -40,6 +40,19 @@ const userSocketMap={};
               socket.to(receiverSocketId).emit("stopTyping", { from });
             }
             })
+
+            socket.on("messageDelivered", ({messageId, senderId})=>{
+                const senderSocketId=userSocketMap[senderId];
+                if(senderSocketId){
+                    socket.to(senderSocketId).emit("messageDelivered", {messageId});
+                }
+            });
+            socket.on("messageRead", ({messageId,senderId})=>{
+                const senderSocketId=userSocketMap[senderId];
+                if(senderSocketId){
+                    socket.to(senderSocketId).emit("messageRead", {messageId});
+                }
+            })
     const userId=socket.handshake.query.userId;
 
 if (userId){
