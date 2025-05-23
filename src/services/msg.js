@@ -104,3 +104,13 @@ try {
             next(error)
         }
     }
+
+
+    export const deleteMessage=async(idMsg,senderId)=>{
+         console.log("Trying to delete:", { _id: idMsg, senderId });
+        const msg=await Msg.findOneAndDelete({
+            _id:idMsg,
+            senderId,
+        });
+        return msg;
+    }
