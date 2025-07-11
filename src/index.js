@@ -19,7 +19,7 @@ app.use(cookieParser());
 
 app.use(
   express.json({
-    type: ["application/json", "application/vnd.api+json"],
+    // type: ["application/json", "application/vnd.api+json"],
   })
 );
 

@@ -51,6 +51,26 @@ socket.on('deleteMessage', ({ messageId, senderId, receiverId }) => {
     io.to(receiverSocketId).emit('messageDeleted', { messageId });
   }
 });
+      
+      
+socket.on('updateMessage', ({ messageId, senderId, receiverId, newText }) => {
+  console.log('Socket updateMessage received:', messageId, newText);
+
+  const senderSocketId = userSocketMap[senderId];
+  const receiverSocketId = userSocketMap[receiverId];
+
+  
+  const updatedPayload = { messageId, newText };
+
+  if (senderSocketId) {
+    io.to(senderSocketId).emit('messageUpdated', updatedPayload);
+  }
+
+  if (receiverSocketId && receiverSocketId !== senderSocketId) {
+    io.to(receiverSocketId).emit('messageUpdated', updatedPayload);
+  }
+});
+
         
         socket.on("stopTyping", ({to, from})=>{
             const receiverSocketId = userSocketMap[to];

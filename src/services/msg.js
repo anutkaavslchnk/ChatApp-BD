@@ -1,3 +1,4 @@
+import Conv from "../db/models/conversation.js";
 import Msg from "../db/models/message.js";
 import User from "../db/models/user.js";
 import { getReceiverId, io } from "../lib/socket.io.js";
@@ -53,6 +54,40 @@ export const getUsers=async(req,res)=>{
     
             await newMessage.save();
     
+        let conv = await Conv.findOne({
+  $or: [
+    { senderId: senderId, receiverId: receiverId },
+    { senderId: receiverId, receiverId: senderId }
+  ]
+});
+
+
+            if (!conv) {
+  
+  conv = new Conv({
+    senderId: senderId,
+    receiverId: receiverId,
+    lastMessage: {
+      msgId: newMessage._id,
+      txt: newMessage.txt,
+      image: newMessage.image
+    },
+    unreadCount: senderId.equals(receiverId) ? 0 : 1 
+  });
+} else {
+  conv.lastMessage = {
+    msgId: newMessage._id,
+    txt: newMessage.txt,
+    image: newMessage.image
+  };
+
+
+if (receiverId.toString() !== senderId.toString()) {
+  conv.unreadCount += 1;
+}
+}
+
+await conv.save();
             const receiverSocketId=getReceiverId(receiverId);
             if(receiverSocketId){
                 io.to(receiverSocketId).emit('newMessage', newMessage);
@@ -114,3 +149,14 @@ try {
         });
         return msg;
     }
+
+export const updateMessage = async (idMsg,payload,options) => {
+    const res = await Msg.findOneAndUpdate({ _id: idMsg }, payload, {
+        new: true,
+        ...options
+    });
+    if (!res) return null;
+    return res;
+}
+    
+
