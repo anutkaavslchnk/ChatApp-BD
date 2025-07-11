@@ -12,7 +12,10 @@ import { app, server } from "./lib/socket.io.js";
 
 app.use(
   cors({
-    origin: "https://chat-app-five-navy-48.vercel.app/",
+    origin: [
+      "https://chat-app-five-navy-48.vercel.app",
+      "http://localhost:5173/",
+    ],
     credentials: true,
   })
 );
