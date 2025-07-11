@@ -1,20 +1,21 @@
-import express from 'express';
+import express from "express";
 
-import { initMongoConnection } from './db/initMongoConnection.js';
-import { env } from './utils/env.js';
-import { PORT_VAR } from './constants/constans.js';
-import cors from 'cors';
-import cookieParser from 'cookie-parser';
-import { errorHandler } from './middlewares/errorHandler.js';
-import { notFoundHandler } from './middlewares/notFoundHandler.js';
-import router from './routers/index.js';
-import { app,server } from './lib/socket.io.js';
+import { initMongoConnection } from "./db/initMongoConnection.js";
+import { env } from "./utils/env.js";
+import { PORT_VAR } from "./constants/constans.js";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import { errorHandler } from "./middlewares/errorHandler.js";
+import { notFoundHandler } from "./middlewares/notFoundHandler.js";
+import router from "./routers/index.js";
+import { app, server } from "./lib/socket.io.js";
 
-
-
-
-
-app.use(cors({ origin: "http://localhost:5173", credentials: true })); 
+app.use(
+  cors({
+    origin: "https://chat-app-five-navy-48.vercel.app/",
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 
 app.use(
